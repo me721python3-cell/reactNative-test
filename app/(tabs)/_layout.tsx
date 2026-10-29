@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { colors } from "@/constants/theme";
 
-type TabKey = "learn" | "practice" | "ranks" | "quests" | "profile";
+type TabKey = "index" | "practice" | "ranks" | "quests" | "profile";
 
 interface TabConfig {
   title: string;
@@ -15,7 +15,7 @@ interface TabConfig {
 }
 
 const TABS: Record<TabKey, TabConfig> = {
-  learn: {
+  index: {
     title: "Learn",
     icons: { active: "home", inactive: "home-outline" },
   },
@@ -74,18 +74,10 @@ export default function TabsLayout() {
         ),
       }}
     >
-      {/* Route alias so /(tabs) resolves directly to Learn */}
       <Tabs.Screen
         name="index"
         options={{
-          href: null,
-        }}
-      />
-
-      <Tabs.Screen
-        name="learn"
-        options={{
-          title: TABS.learn.title,
+          title: TABS.index.title,
           tabBarIcon: ({ focused }) => (
             <View
               className={`items-center justify-center rounded-xl px-2.5 py-0.5 ${
@@ -95,7 +87,7 @@ export default function TabsLayout() {
               }`}
             >
               <Ionicons
-                name={TABS.learn.icons[focused ? "active" : "inactive"]}
+                name={TABS.index.icons[focused ? "active" : "inactive"]}
                 size={22}
                 color={focused ? colors.primary : colors.outline}
               />

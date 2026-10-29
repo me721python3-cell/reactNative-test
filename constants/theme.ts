@@ -35,6 +35,13 @@ export const colors = {
   gemDark: "#1899d6",
   heart: "#ff4b4b",
   heartDark: "#ea2b2b",
+
+  // LessonNode & Unit tokens (DESIGN.md)
+  gold: "#ffc800",
+  goldDark: "#e5b400",
+  locked: "#e5e5e5",
+  lockedDark: "#cecece",
+  lockedIcon: "#afafaf",
 } as const;
 
 /** Radii used across buttons, cards and inputs (per Stitch designs). */
