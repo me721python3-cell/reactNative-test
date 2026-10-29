@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "NativeCourse",
+    "slug": "nativecourse",
+    "version": "1.0.0",
+    "scheme": "nativecourse",
+    "userInterfaceStyle": "light",
+    "plugins": [
+      "expo-router",
+      "expo-status-bar"
+    ],
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}
