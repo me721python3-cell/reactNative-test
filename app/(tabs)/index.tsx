@@ -1,5 +1,6 @@
 import { Alert, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
 
 import { LessonNode } from "@/components/LessonNode";
 import { MobileHeader } from "@/components/MobileHeader";
@@ -30,10 +31,8 @@ function getSCurveMargin(index: number) {
  */
 export default function LearnScreen() {
   const handleLessonPress = (lesson: Lesson) => {
-    if (lesson.status === "active") {
-      Alert.alert(lesson.title, "Ready to start this lesson? Let's begin!");
-    } else if (lesson.status === "completed") {
-      Alert.alert(lesson.title, "Practice this completed lesson for +5 XP!");
+    if (lesson.status !== "locked") {
+      router.push(`/lesson/${lesson.id}`);
     }
   };
 

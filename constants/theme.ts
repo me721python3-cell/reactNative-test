@@ -42,6 +42,17 @@ export const colors = {
   locked: "#e5e5e5",
   lockedDark: "#cecece",
   lockedIcon: "#afafaf",
+
+  // Choice card and validation feedback drawer tokens (DESIGN.md)
+  cardSelectedBg: "#ddf4ff",
+  cardSelectedBorder: "#1cb0f6",
+  cardSelectedDark: "#1899d6",
+  cardCorrectBg: "#d7ffb8",
+  cardCorrectBorder: "#58cc02",
+  cardCorrectDark: "#46a302",
+  cardErrorBg: "#ffdfe0",
+  cardErrorBorder: "#ff4b4b",
+  cardErrorDark: "#ea2b2b",
 } as const;
 
 /** Radii used across buttons, cards and inputs (per Stitch designs). */

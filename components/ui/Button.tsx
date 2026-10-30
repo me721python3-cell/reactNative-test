@@ -1,7 +1,7 @@
 import { Pressable, Text, View } from "react-native";
 import { colors, radii, sizes } from "@/constants/theme";
 
-type ButtonVariant = "primary" | "secondary" | "outline";
+type ButtonVariant = "primary" | "secondary" | "outline" | "danger";
 
 interface ButtonProps {
   label: string;
@@ -14,6 +14,7 @@ const variantStyles: Record<ButtonVariant, { bg: string; text: string; shadow: s
   primary: { bg: colors.primary, text: colors.onPrimary, shadow: colors.primaryDark },
   secondary: { bg: colors.secondaryFixed, text: colors.onSecondaryFixed, shadow: colors.onSecondaryFixedVariant },
   outline: { bg: colors.surface, text: colors.primary, shadow: colors.outlineVariant },
+  danger: { bg: colors.heart, text: colors.onPrimary, shadow: colors.heartDark },
 };
 
 /**
