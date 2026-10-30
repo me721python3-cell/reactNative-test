@@ -1,4 +1,3 @@
-import { Pressable, View } from "react-native";
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -25,24 +24,24 @@ const TABS: Record<TabKey, TabConfig> = {
   },
   ranks: {
     title: "Ranks",
-    icons: { active: "trophy", inactive: "trophy-outline" },
+    icons: { active: "shield", inactive: "shield-outline" },
   },
   quests: {
     title: "Quests",
-    icons: { active: "medal", inactive: "medal-outline" },
+    icons: { active: "archive", inactive: "archive-outline" },
   },
   profile: {
     title: "Profile",
-    icons: { active: "person", inactive: "person-outline" },
+    icons: { active: "person-circle", inactive: "person-circle-outline" },
   },
 };
 
 /**
  * Main navigation shell with 5 tabs: Learn, Practice, Ranks, Quests, Profile.
- * Incorporates Duolingo-style Tactile 3D aesthetic per AGENTS.md:
- * - Solid 2px top shelf
- * - Tactile active tile container with solid bottom lip
- * - Mechanical press translation feedback (active:translate-y-0.5)
+ * Clean, evenly-spaced bottom bar following Duolingo's aesthetic:
+ * - Solid 2px top shelf border (#E5E5E5)
+ * - Distinct active (solid green #58CC02) and inactive (outline #6F7B64) icons
+ * - Proper vertical clearance and equal flex distribution so icons and labels never overlap
  */
 export default function TabsLayout() {
   return (
@@ -50,28 +49,26 @@ export default function TabsLayout() {
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.outline,
+        tabBarInactiveTintColor: "#4b4b4b",
         tabBarLabelStyle: {
           fontSize: 11,
           fontWeight: "800",
+          marginTop: 2,
+        },
+        tabBarIconStyle: {
+          marginBottom: 0,
+        },
+        tabBarItemStyle: {
+          paddingVertical: 4,
         },
         tabBarStyle: {
           backgroundColor: colors.surface,
           borderTopWidth: 2,
           borderTopColor: colors.border,
-          height: 64,
+          height: 66,
           paddingBottom: 8,
           paddingTop: 6,
         },
-        tabBarButton: ({ ref, ...props }) => (
-          <Pressable
-            {...props}
-            accessibilityRole="button"
-            className="flex-1 items-center justify-center py-1 active:translate-y-0.5"
-          >
-            {props.children}
-          </Pressable>
-        ),
       }}
     >
       <Tabs.Screen
@@ -79,19 +76,11 @@ export default function TabsLayout() {
         options={{
           title: TABS.index.title,
           tabBarIcon: ({ focused }) => (
-            <View
-              className={`items-center justify-center rounded-xl px-2.5 py-0.5 ${
-                focused
-                  ? "border-2 border-b-[3px] border-[#58cc02] bg-[#58cc02]/15"
-                  : "border-2 border-transparent"
-              }`}
-            >
-              <Ionicons
-                name={TABS.index.icons[focused ? "active" : "inactive"]}
-                size={22}
-                color={focused ? colors.primary : colors.outline}
-              />
-            </View>
+            <Ionicons
+              name={TABS.index.icons[focused ? "active" : "inactive"]}
+              size={focused ? 26 : 24}
+              color={focused ? colors.primary : "#4b4b4b"}
+            />
           ),
         }}
       />
@@ -101,19 +90,11 @@ export default function TabsLayout() {
         options={{
           title: TABS.practice.title,
           tabBarIcon: ({ focused }) => (
-            <View
-              className={`items-center justify-center rounded-xl px-2.5 py-0.5 ${
-                focused
-                  ? "border-2 border-b-[3px] border-[#58cc02] bg-[#58cc02]/15"
-                  : "border-2 border-transparent"
-              }`}
-            >
-              <Ionicons
-                name={TABS.practice.icons[focused ? "active" : "inactive"]}
-                size={22}
-                color={focused ? colors.primary : colors.outline}
-              />
-            </View>
+            <Ionicons
+              name={TABS.practice.icons[focused ? "active" : "inactive"]}
+              size={focused ? 26 : 24}
+              color={focused ? colors.primary : "#4b4b4b"}
+            />
           ),
         }}
       />
@@ -123,19 +104,11 @@ export default function TabsLayout() {
         options={{
           title: TABS.ranks.title,
           tabBarIcon: ({ focused }) => (
-            <View
-              className={`items-center justify-center rounded-xl px-2.5 py-0.5 ${
-                focused
-                  ? "border-2 border-b-[3px] border-[#58cc02] bg-[#58cc02]/15"
-                  : "border-2 border-transparent"
-              }`}
-            >
-              <Ionicons
-                name={TABS.ranks.icons[focused ? "active" : "inactive"]}
-                size={22}
-                color={focused ? colors.primary : colors.outline}
-              />
-            </View>
+            <Ionicons
+              name={TABS.ranks.icons[focused ? "active" : "inactive"]}
+              size={focused ? 26 : 24}
+              color={focused ? colors.primary : "#4b4b4b"}
+            />
           ),
         }}
       />
@@ -145,19 +118,11 @@ export default function TabsLayout() {
         options={{
           title: TABS.quests.title,
           tabBarIcon: ({ focused }) => (
-            <View
-              className={`items-center justify-center rounded-xl px-2.5 py-0.5 ${
-                focused
-                  ? "border-2 border-b-[3px] border-[#58cc02] bg-[#58cc02]/15"
-                  : "border-2 border-transparent"
-              }`}
-            >
-              <Ionicons
-                name={TABS.quests.icons[focused ? "active" : "inactive"]}
-                size={22}
-                color={focused ? colors.primary : colors.outline}
-              />
-            </View>
+            <Ionicons
+              name={TABS.quests.icons[focused ? "active" : "inactive"]}
+              size={focused ? 26 : 24}
+              color={focused ? colors.primary : "#4b4b4b"}
+            />
           ),
         }}
       />
@@ -167,19 +132,11 @@ export default function TabsLayout() {
         options={{
           title: TABS.profile.title,
           tabBarIcon: ({ focused }) => (
-            <View
-              className={`items-center justify-center rounded-xl px-2.5 py-0.5 ${
-                focused
-                  ? "border-2 border-b-[3px] border-[#58cc02] bg-[#58cc02]/15"
-                  : "border-2 border-transparent"
-              }`}
-            >
-              <Ionicons
-                name={TABS.profile.icons[focused ? "active" : "inactive"]}
-                size={22}
-                color={focused ? colors.primary : colors.outline}
-              />
-            </View>
+            <Ionicons
+              name={TABS.profile.icons[focused ? "active" : "inactive"]}
+              size={focused ? 26 : 24}
+              color={focused ? colors.primary : "#4b4b4b"}
+            />
           ),
         }}
       />

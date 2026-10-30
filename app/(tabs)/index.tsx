@@ -54,7 +54,7 @@ export default function LearnScreen() {
       {/* Main Path ScrollView */}
       <ScrollView
         className="flex-1"
-        contentContainerStyle={{ paddingTop: 16, paddingBottom: 96 }}
+        contentContainerStyle={{ paddingTop: 16, paddingBottom: 140 }}
         showsVerticalScrollIndicator={false}
       >
         {mockUnits.map((unit) => {
