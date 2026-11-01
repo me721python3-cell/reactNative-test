@@ -20,6 +20,8 @@ web-build/
 .metro-health-check*
 
 # Environment & debug
+.env
+.env.*
 .env*.local
 npm-debug.*
 yarn-debug.*
