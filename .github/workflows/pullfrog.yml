@@ -7,9 +7,11 @@ on:
       prompt:
         type: string
         description: Agent prompt
+        default: "Review the codebase structure and suggest any improvements"
       name:
         type: string
         description: Run name
+        default: "Code Review"
 
 permissions:
   contents: read
@@ -29,7 +31,7 @@ jobs:
       - name: Run agent
         uses: pullfrog/pullfrog@v0
         with:
-          prompt: ${{ inputs.prompt }}
+          prompt: ${{ inputs.prompt || 'Review the codebase structure and suggest any improvements' }}
         env:
           # add at least one provider API key
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
