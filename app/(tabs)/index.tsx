@@ -9,8 +9,8 @@ import { colors } from "@/constants/theme";
 import { Lesson, mockUnits } from "@/data/mockUnits";
 
 /**
- * Cycle of horizontal offsets in pixels to generate the winding S-curve.
- * Order: Center -> Right -> Far Right -> Right -> Center -> Left -> Far Left -> Left
+ * Lingua Home / Learn Screen
+ * Renders the gamified learning path in an S-curve layout with interactive unit nodes.
  */
 const S_CURVE_OFFSETS = [0, 50, 80, 50, 0, -50, -80, -50];
 

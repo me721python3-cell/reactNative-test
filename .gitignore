@@ -19,6 +19,11 @@ web-build/
 # Metro cache
 .metro-health-check*
 
+# AI Reviewer local runtime files
+.ai-reviewer/review-log.jsonl
+.ai-reviewer/codebase-context.json
+.ai-reviewer/dashboard.html
+
 # Environment & debug
 .env
 .env.*
