@@ -7,6 +7,7 @@ import { MobileHeader } from "@/components/MobileHeader";
 import { UnitBanner } from "@/components/UnitBanner";
 import { colors } from "@/constants/theme";
 import { Lesson, mockUnits } from "@/data/mockUnits";
+import { useAppStore } from "@/store/useAppStore";
 
 /**
  * Lingua Home / Learn Screen
@@ -30,10 +31,18 @@ function getSCurveMargin(index: number) {
  * gamified S-curve path. Follows AGENTS.md data mocking and Stitch design rules.
  */
 export default function LearnScreen() {
+  const getLessonStatus = useAppStore((state) => state.getLessonStatus);
+
   const handleLessonPress = (lesson: Lesson) => {
-    if (lesson.status !== "locked") {
-      router.push(`/lesson/${lesson.id}`);
+    if (lesson.status === "locked") {
+      Alert.alert(
+        "Lesson Locked 🔒",
+        "Complete the earlier active lessons to unlock this lesson!",
+        [{ text: "OK" }]
+      );
+      return;
     }
+    router.push(`/lesson/${lesson.id}`);
   };
 
   const handleGuidebookPress = (unitTitle: string) => {
@@ -75,19 +84,25 @@ export default function LearnScreen() {
                   const currentIndex = globalLessonIndex;
                   globalLessonIndex += 1;
 
+                  const dynamicStatus = getLessonStatus(lesson.id);
+                  const dynamicLesson: Lesson = {
+                    ...lesson,
+                    status: dynamicStatus,
+                  };
+
                   return (
                     <View
                       key={lesson.id}
                       style={[
                         getSCurveMargin(currentIndex),
                         {
-                          marginTop: lesson.status === "active" ? 36 : 14,
+                          marginTop: dynamicStatus === "active" ? 36 : 14,
                           marginBottom: 16,
                         },
                       ]}
                     >
                       <LessonNode
-                        lesson={lesson}
+                        lesson={dynamicLesson}
                         onPress={handleLessonPress}
                       />
                     </View>
@@ -101,3 +116,4 @@ export default function LearnScreen() {
     </SafeAreaView>
   );
 }
+

@@ -34,12 +34,16 @@ The app includes:
 3. **TYPED MOCKS:** Every mocked file must have a corresponding TypeScript interface. Import the mock data into the component and map over it.
 4. **NO PLACEHOLDER URLS:** Do not use random remote URLs for images. Place all images in `assets/images/` and reference them via a centralized `constants/images.ts` file.
 
-## CRITICAL: Git & Docker Rules
+## CRITICAL: Git, Review & Deployment Workflow
 1. **Docker Context:** The app runs inside a Docker container. Do not run commands that require a local Android SDK/Xcode. Use Expo Go.
-2. **Git Workflow:** We use a `development` branch and feature branches. Do not commit directly to `main`. 
-3. **Atomic Commits:** After completing a feature, provide a clean commit message.
-4. **Do not run Git commands automatically:** Provide the commands in the chat and let me run them.
-5. **Dependency Management:** ALWAYS read `package.json` before writing code. Never install a new library without asking me first.
+2. **Git Workflow:** We develop on `development` and feature branches.
+3. **Automated Iteration Pipeline:** After each iteration/feature completion:
+   - **Step 1 — Commit:** Stage relevant files and create an atomic Git commit on `development`.
+   - **Step 2 — Verify Local Code Review:** Ensure the pre-commit hook (`ai-reviewer`) runs and gives a clean verdict.
+   - **Step 3 — Push to GitHub:** Push the `development` branch to remote origin.
+   - **Step 4 — Check Pullfrog:** Verify / trigger Pullfrog review on GitHub Actions.
+   - **Step 5 — Merge to Main:** If all tests, TypeScript checks (`npx tsc --noEmit`), and code reviews pass, merge `development` into `main` and push `main`.
+4. **Dependency Management:** ALWAYS read `package.json` before writing code. Never install a new library without asking me first.
 
 ## Architecture & Folder Structure
 app/ # Routes and screens ONLY. No large reusable UI blocks or complex business logic here.
@@ -78,5 +82,10 @@ Whenever I ask for a feature:
 2. Identify the exact files to change. Keep changes focused.
 3. Do not rewrite unrelated code. Follow existing patterns.
 4. Make sure the feature works end to end.
-5. Fix lint and type errors before finishing.
-6. Provide a clean, atomic Git commit message at the end.
+5. Fix lint and type errors before finishing (`npx tsc --noEmit`).
+6. Execute the Automated Iteration Pipeline:
+   - Commit changes on `development`.
+   - Run & verify local code review via `ai-reviewer`.
+   - Push `development` to GitHub.
+   - Trigger / verify Pullfrog review.
+   - Merge `development` into `main` and push if all checks pass.

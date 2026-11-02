@@ -8,6 +8,7 @@ import {
   StatType,
   UserProgressData,
 } from "@/data/mockUserProgress";
+import { useAppStore } from "@/store/useAppStore";
 
 interface MobileHeaderProps {
   progress?: UserProgressData;
@@ -20,10 +21,23 @@ interface MobileHeaderProps {
  * Built with tactile 3D chips per AGENTS.md and DESIGN.md.
  */
 export function MobileHeader({
-  progress = mockUserProgress,
+  progress: customProgress,
   onStatPress,
   onPressCourse,
 }: MobileHeaderProps) {
+  const storeStreak = useAppStore((state) => state.streak);
+  const storeGems = useAppStore((state) => state.gems);
+  const storeHearts = useAppStore((state) => state.hearts);
+  const storeMaxHearts = useAppStore((state) => state.maxHearts);
+  const storeCourse = useAppStore((state) => state.activeCourse);
+
+  const progress: UserProgressData = customProgress ?? {
+    streak: storeStreak,
+    gems: storeGems,
+    hearts: storeHearts,
+    maxHearts: storeMaxHearts,
+    activeCourse: storeCourse,
+  };
   const stats: HeaderStatItem[] = [
     {
       id: "streak",

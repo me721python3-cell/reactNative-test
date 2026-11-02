@@ -7,7 +7,8 @@ import { ChallengeCard } from "@/components/ChallengeCard";
 import { DrawerStatus, FooterDrawer } from "@/components/FooterDrawer";
 import { LessonHeader } from "@/components/LessonHeader";
 import { colors } from "@/constants/theme";
-import { mockLessonData } from "@/data/mockChallenges";
+import { getMockLessonById, getNextLessonId } from "@/data/mockChallenges";
+import { useAppStore } from "@/store/useAppStore";
 
 /**
  * Lesson Screen (Gameplay Arena).
@@ -18,9 +19,16 @@ import { mockLessonData } from "@/data/mockChallenges";
  */
 export default function LessonScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const lessonId = id || "u1-l4";
 
-  // In future phases, load dynamic challenge by ID. Using typed mock for now.
-  const lesson = mockLessonData;
+  // Load specific challenge dynamically by lesson ID
+  const lesson = getMockLessonById(lessonId);
+
+  // Subscribe to live Zustand game state
+  const hearts = useAppStore((state) => state.hearts);
+  const decrementHeart = useAppStore((state) => state.decrementHeart);
+  const refillHearts = useAppStore((state) => state.refillHearts);
+  const completeLesson = useAppStore((state) => state.completeLesson);
 
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
   const [drawerStatus, setDrawerStatus] = useState<DrawerStatus>("none");
@@ -42,17 +50,41 @@ export default function LessonScreen() {
     if (selected?.isCorrect) {
       setDrawerStatus("success");
     } else {
+      decrementHeart();
       setDrawerStatus("error");
     }
   };
 
   const handleContinue = () => {
-    Alert.alert("Lesson Complete!", "Great job! Returning to the Learn dashboard.", [
-      { text: "OK", onPress: () => router.back() },
-    ]);
+    const nextLessonId = getNextLessonId(lesson.id);
+    completeLesson(lesson.id, nextLessonId);
+
+    Alert.alert(
+      "Lesson Complete! 🎉",
+      "Great job! You earned +10 Gems 💎 and unlocked the next lesson.",
+      [{ text: "CONTINUE", onPress: () => router.back() }]
+    );
   };
 
   const handleRetry = () => {
+    if (hearts <= 0) {
+      Alert.alert(
+        "Out of Hearts! ❤️",
+        "You need hearts to continue practicing. Would you like to refill your hearts?",
+        [
+          { text: "Quit Lesson", style: "destructive", onPress: () => router.back() },
+          {
+            text: "Refill Hearts",
+            onPress: () => {
+              refillHearts();
+              setDrawerStatus("none");
+              setSelectedOptionId(null);
+            },
+          },
+        ]
+      );
+      return;
+    }
     setDrawerStatus("none");
     setSelectedOptionId(null);
   };
@@ -73,7 +105,7 @@ export default function LessonScreen() {
       {/* Header with progress bar & hearts */}
       <LessonHeader
         progressPercentage={lesson.percentage}
-        hearts={lesson.hearts}
+        hearts={hearts}
         onClose={handleClose}
       />
 
