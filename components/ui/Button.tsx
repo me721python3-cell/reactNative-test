@@ -28,7 +28,7 @@ export function Button({ label, onPress, variant = "primary", disabled = false }
     <View className="relative">
       <View
         className="absolute inset-x-0 bottom-0"
-        style={{ height: sizes.button, borderRadius: radii.button, backgroundColor: disabled ? colors.surfaceDim : style.shadow }}
+        style={{ height: sizes.button + 4, borderRadius: radii.button, backgroundColor: disabled ? colors.surfaceDim : style.shadow }}
       />
       <Pressable
         accessibilityRole="button"
@@ -36,7 +36,13 @@ export function Button({ label, onPress, variant = "primary", disabled = false }
         disabled={disabled}
         onPress={onPress}
         className={`relative items-center justify-center active:translate-y-1 active:shadow-none`}
-        style={{ height: sizes.button, borderRadius: radii.button, backgroundColor: disabled ? colors.surfaceDim : style.bg }}
+        style={{
+          height: sizes.button,
+          borderRadius: radii.button,
+          backgroundColor: disabled ? colors.surfaceDim : style.bg,
+          borderWidth: variant === "outline" ? 2 : 0,
+          borderColor: variant === "outline" ? colors.border : "transparent",
+        }}
       >
         <Text className="text-base font-extrabold tracking-wide" style={{ color: disabled ? colors.outline : style.text }}>
           {label}
