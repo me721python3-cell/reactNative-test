@@ -1,10 +1,15 @@
 import { create } from "zustand";
 
-import { LessonStatus } from "@/data/mockUnits";
+import {
+  DEFAULT_LESSON_ID,
+  GEM_FIRST_COMPLETE_REWARD,
+  GEM_REPLAY_REWARD,
+  INITIAL_COMPLETED_LESSON_IDS,
+} from "@/constants/progression";
+import type { LessonStatus } from "@/data/mockUnits";
 import { ActiveCourse, mockUserProgress } from "@/data/mockUserProgress";
 
 export interface AppState {
-  // Gamification stats
   streak: number;
   gems: number;
   hearts: number;
@@ -12,7 +17,7 @@ export interface AppState {
   activeCourse: ActiveCourse;
 
   // Lesson progression
-  completedLessonIds: string[];
+  completedLessonIds: ReadonlySet<string>;
   activeLessonId: string;
 
   // Actions
@@ -22,11 +27,34 @@ export interface AppState {
   incrementStreak: () => void;
   setActiveCourse: (course: ActiveCourse) => void;
   completeLesson: (lessonId: string, nextLessonId?: string) => void;
-  getLessonStatus: (lessonId: string) => LessonStatus;
   resetProgress: () => void;
 }
 
-export const useAppStore = create<AppState>((set, get) => ({
+export interface ResolveLessonStatusArgs {
+  lessonId: string;
+  completedLessonIds: ReadonlySet<string>;
+  activeLessonId?: string;
+}
+
+/**
+ * Single source of truth for resolving a lesson's progression status.
+ * Requires a ReadonlySet for O(1) lookup performance along the learning path.
+ */
+export function resolveLessonStatus({
+  lessonId,
+  completedLessonIds,
+  activeLessonId,
+}: ResolveLessonStatusArgs): LessonStatus {
+  if (completedLessonIds.has(lessonId)) {
+    return "completed";
+  }
+  if (activeLessonId === lessonId) {
+    return "active";
+  }
+  return "locked";
+}
+
+export const useAppStore = create<AppState>((set) => ({
   streak: mockUserProgress.streak,
   gems: mockUserProgress.gems,
   hearts: mockUserProgress.hearts,
@@ -34,8 +62,8 @@ export const useAppStore = create<AppState>((set, get) => ({
   activeCourse: mockUserProgress.activeCourse,
 
   // Initial progression matching mockUnits baseline
-  completedLessonIds: ["u1-l1", "u1-l2", "u1-l3"],
-  activeLessonId: "u1-l4",
+  completedLessonIds: new Set(INITIAL_COMPLETED_LESSON_IDS),
+  activeLessonId: DEFAULT_LESSON_ID,
 
   decrementHeart: () =>
     set((state) => ({
@@ -64,10 +92,10 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   completeLesson: (lessonId: string, nextLessonId?: string) =>
     set((state) => {
-      const alreadyCompleted = state.completedLessonIds.includes(lessonId);
+      const alreadyCompleted = state.completedLessonIds.has(lessonId);
       const updatedCompleted = alreadyCompleted
         ? state.completedLessonIds
-        : [...state.completedLessonIds, lessonId];
+        : new Set([...state.completedLessonIds, lessonId]);
 
       const updatedActive =
         state.activeLessonId === lessonId && nextLessonId
@@ -77,27 +105,16 @@ export const useAppStore = create<AppState>((set, get) => ({
       return {
         completedLessonIds: updatedCompleted,
         activeLessonId: updatedActive,
-        gems: state.gems + (alreadyCompleted ? 2 : 10),
+        gems: state.gems + (alreadyCompleted ? GEM_REPLAY_REWARD : GEM_FIRST_COMPLETE_REWARD),
       };
     }),
-
-  getLessonStatus: (lessonId: string): LessonStatus => {
-    const state = get();
-    if (state.completedLessonIds.includes(lessonId)) {
-      return "completed";
-    }
-    if (state.activeLessonId === lessonId) {
-      return "active";
-    }
-    return "locked";
-  },
 
   resetProgress: () =>
     set(() => ({
       streak: mockUserProgress.streak,
       gems: mockUserProgress.gems,
       hearts: mockUserProgress.maxHearts,
-      completedLessonIds: ["u1-l1", "u1-l2", "u1-l3"],
-      activeLessonId: "u1-l4",
+      completedLessonIds: new Set(INITIAL_COMPLETED_LESSON_IDS),
+      activeLessonId: DEFAULT_LESSON_ID,
     })),
 }));

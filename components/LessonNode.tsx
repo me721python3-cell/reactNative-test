@@ -2,11 +2,11 @@ import { Pressable, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import { colors } from "@/constants/theme";
-import { Lesson, LessonStatus } from "@/data/mockUnits";
+import type { EnrichedLesson, LessonStatus } from "@/data/mockUnits";
 
 interface LessonNodeProps {
-  lesson: Lesson;
-  onPress?: (lesson: Lesson) => void;
+  lesson: EnrichedLesson;
+  onPress?: (lesson: EnrichedLesson) => void;
 }
 
 interface NodeTheme {
@@ -46,7 +46,10 @@ const BEVEL_HEIGHT = 8;
  * - Active: Large light green halo aura + waving mascot + '▶ START' speech bubble + green 3D node
  * - Locked: Grey surface + dark grey bevel + lock icon
  */
-export function LessonNode({ lesson, onPress }: LessonNodeProps) {
+export function LessonNode({
+  lesson,
+  onPress,
+}: LessonNodeProps) {
   const theme = STATUS_THEMES[lesson.status];
   const isLocked = lesson.status === "locked";
   const isActive = lesson.status === "active";
@@ -154,9 +157,7 @@ export function LessonNode({ lesson, onPress }: LessonNodeProps) {
           accessibilityState={{ disabled: isLocked }}
           disabled={isLocked}
           onPress={handlePress}
-          className={`items-center justify-center ${
-            !isLocked ? "active:translate-y-2" : ""
-          }`}
+          className="items-center justify-center active:translate-y-2"
           style={{
             width: NODE_SIZE,
             height: NODE_SIZE,

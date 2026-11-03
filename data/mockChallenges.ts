@@ -161,19 +161,21 @@ export const mockLessonsById: Record<string, MockLessonData> = {
 };
 
 /**
- * Default fallback lesson data (u1-l4) for backward compatibility and fallback.
+ * Safe accessor that returns the specific lesson challenge, or undefined if not found.
  */
-export const mockLessonData: MockLessonData = mockLessonsById["u1-l4"];
+export function tryGetMockLessonById(lessonId: string): MockLessonData | undefined {
+  return Object.prototype.hasOwnProperty.call(mockLessonsById, lessonId)
+    ? mockLessonsById[lessonId]
+    : undefined;
+}
 
 /**
- * Safe accessor that returns the specific lesson challenge or falls back gracefully.
+ * Returns the specific lesson challenge for the given ID, or throws if not found.
  */
 export function getMockLessonById(lessonId: string): MockLessonData {
-  if (mockLessonsById[lessonId]) {
-    return mockLessonsById[lessonId];
+  const lesson = tryGetMockLessonById(lessonId);
+  if (!lesson) {
+    throw new Error(`Lesson not found: ${lessonId}`);
   }
-  return {
-    ...mockLessonData,
-    id: lessonId,
-  };
+  return lesson;
 }

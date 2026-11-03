@@ -11,6 +11,10 @@ export interface Lesson {
   status: LessonStatus;
 }
 
+export type EnrichedLesson = Lesson & {
+  currentIndex: number;
+};
+
 export interface Unit {
   id: string;
   unitNumber: number;

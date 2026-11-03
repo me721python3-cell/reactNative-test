@@ -1,10 +1,158 @@
 {
   "version": 2,
   "project": "NativeCourse",
-  "total_commits_reviewed": 2,
-  "recurring_issues": [],
-  "team_blind_spots": [],
-  "security_patterns_found": [],
-  "crash_patterns_found": [],
-  "last_reviewed": "2026-11-01T01:56:02.754Z"
+  "total_commits_reviewed": 52,
+  "recurring_issues": [
+    "EmptyState wrapper introduced with two unused-at-scale props (action, showHeader) consumed only by NotFound path",
+    "try/finally missing around Alert.alert in guard refs — lock persists on synchronous alert throw",
+    "GoBackOrHome try/finally missing — isNavigating flag never released on navigation throw",
+    "getMockLessonById return-type narrowed from non-nullable to MockLessonData | undefined while strict throwing twin not exported — latent TypeError class (repeat of known blind spot)",
+    "mockLessonData exported as MockLessonData | undefined while marked @deprecated — deferred crash for legacy consumers",
+    "useAlertGuard.acquire/release/isActive not wrapped in useCallback — future re-render churn",
+    "handleCheck 'Pick an answer' alert path bypasses alert guard — stacked-alert class",
+    "goBackOrHome flag released on setTimeout instead of requestAnimationFrame — drops legitimate back navigations (repeat of known blind spot)",
+    "EmptyState wrapper introduced with two props (action, showHeader) consumed only by NotFound path — repeat of prior blind spot",
+    "Guard release inside Alert.alert onPress not wrapped in try/finally — lock persists on synchronous throw (extends existing alert-guard blind spot)",
+    "Mutable counter (globalIdx++) inside useMemo map — impure memo output; index-drift class new instance with per-unit S-curve table",
+    "Guard released BEFORE navigation call in onPress handlers — double-fire risk",
+    "requestAnimationFrame-based release in RN navigation helper drops legitimate nav on throw path",
+    "Deprecated const typed non-optional from throwing IIFE at module load — boot-time crash for legacy consumers",
+    "useAlertGuard defined locally in a route file instead of shared lib/ — first instance of guard duplication",
+    "Deprecated export typed non-optional but switched to optional union — legacy consumers crash at first render (inverse of the throwing-IIFE blind spot)",
+    "Guarded alert skeleton re-implemented 4x in one file instead of a showGuardedAlert helper — release-order drift risk",
+    "goBackOrHome requestAnimationFrame release still drops legitimate nav (third recurrence)",
+    "Exported const widened from required to optional type (`mockLessonData: MockLessonData | undefined`) — inverse of the throwing-IIFE blind spot; legacy consumers crash at first property access.",
+    "Cross-module dual-guard race: `goBackOrHome`'s `setTimeout`-reset flag and `useAlertGuard`'s ref are independent locks; releasing one before/after the other creates a window where both are effectively unguarded.",
+    "Adding component props (`action`, `showHeader` on `EmptyState`) with only one consumer — repeat of the EmptyState/NotFound blind spot.",
+    "onDismiss: release combined with per-button release() causes double-release that drops legitimate navigation",
+    "mockLessonData exported as non-optional MockLessonData from a nullish coalescing chain that can yield undefined",
+    "useAlertGuard extraction in a route file even after lib/ exists — second instance of the same blind spot",
+    "store state holds string[] while resolver requires ReadonlySet<string> — representation mismatch",
+    "Store holds string[] but resolver requires ReadonlySet<string> — recurrence of representation-mismatch blind spot, now in the same PR that introduced the resolver.",
+    "Guarded-alert skeleton re-implemented 5x in one file (previous blind spot was 4x) — no showGuardedAlert helper extracted even though lib/ exists.",
+    "onDismiss: releaseGuard combined with per-button releaseGuard calls across handleContinue/handleClose — double-release recurrence.",
+    "Deprecated mockLessonData typed as MockLessonData | undefined — inverse-of-throwing-IIFE recurrence; legacy consumers crash on first property access.",
+    "releaseGuard called twice on the goBackOrHome success path (once in completeLesson callback, once inside goBackOrHome) — release-order drift on navigation.",
+    "alertGuard global state has no screen ownership — LessonArena unmount releases another screen's guard (recurrence of release-order drift, now across screens)",
+    "showGuardedAlert's onDismiss safeRelease races with goBackOrHome's isNavigating rAF reset — double-release recurrence re-appears at the lib boundary",
+    "EmptyState showHeader/action added for a single consumer — EmptyState blind spot recurrence",
+    "resolveLessonStatus accepts Set|array to paper over store string[] representation — representation-mismatch recurrence in the same PR that introduces the resolver",
+    "mockLessonData typed non-optional but built from throwing getMockLessonById — inverse-of-throwing-IIFE recurrence",
+    "Guard cleanup hardcodes six keys with no per-screen ownership Set — cross-screen release recurrence",
+    "showGuardedAlert error-path inner alert cannot acquire guard while outer alert still held — silent failure on completeLesson",
+    "resolveLessonStatus accepting Set|array to mask store string[] representation mismatch — same PR reintroduces it",
+    "alertGuard singleton has no per-screen ownership Set — release-by-key-list will always race cross-screen",
+    "goBackOrHome isNavigating flag reset via rAF is untethered — new race in the module introduced to fix the old race",
+    "showGuardedAlert error-path setTimeout defers alert past unmount cleanup, guaranteeing silent release",
+    "Set-based completedLessonIds defeats useShallow in the same PR that claims to fix re-renders",
+    "Set-based completedLessonIds defeats useShallow — same PR that claims to fix re-renders",
+    "goBackOrHome isNavigating rAF double-tick reset is untethered to actual navigation completion",
+    "showGuardedAlert error-path setTimeout defers a second alert past owner cleanup — silent guard leak",
+    "releaseGuardsForOwner relies on single activeOwnerId; concurrent owners from same screen leak guard",
+    "EmptyState showHeader/action added for one consumer each — API bloat for single use-case",
+    "release-by-key-list race condition across screens",
+    "goBackOrHome isNavigating flag reset untethered from actual navigation completion",
+    "showGuardedAlert error-path setTimeout defers alert past unmount cleanup"
+  ],
+  "team_blind_spots": [
+    "showGuardedAlert error-path setTimeout defers alert past unmount cleanup, guaranteeing silent release",
+    "Set-based completedLessonIds defeats useShallow in the same PR that claims to fix re-renders",
+    "Set-based completedLessonIds defeats useShallow — same PR that claims to fix re-renders",
+    "goBackOrHome isNavigating rAF double-tick reset is untethered to actual navigation completion",
+    "showGuardedAlert error-path setTimeout defers a second alert past owner cleanup — silent guard leak",
+    "releaseGuardsForOwner relies on single activeOwnerId; concurrent owners from same screen leak guard",
+    "EmptyState showHeader/action added for one consumer each — API bloat for single use-case",
+    "release-by-key-list race condition across screens",
+    "goBackOrHome isNavigating flag reset untethered from actual navigation completion",
+    "showGuardedAlert error-path setTimeout defers alert past unmount cleanup"
+  ],
+  "security_patterns_found": [
+    {
+      "date": "2026-11-03T01:29:34.720Z",
+      "issue": "data/mockChallenges.ts:194 re-introduces the throwing-IIFE mockLessonData blind spot for the Nth time ��� delete the deprecated export before merge; then fix the alertGuard ownership model, which is the root cause of three of the six recurrences in this PR."
+    }
+  ],
+  "crash_patterns_found": [
+    {
+      "date": "2026-11-03T00:26:52.866Z",
+      "issue": "getMockLessonById now returns `| undefined` and the only consumer guard in app/lesson/[id].tsx uses bracket lookup without Object.hasOwn — a /lesson/constructor deep link bypasses the `!lesson` guard and crashes when reading .challenge.options"
+    },
+    {
+      "date": "2026-11-03T00:29:20.303Z",
+      "issue": "app/lesson/[id].tsx handleCheck: move isPromptingHeartsRef guard to the top and add drawerStatus guard — otherwise rapid taps stack Alerts and double-decrement hearts."
+    },
+    {
+      "date": "2026-11-03T00:34:45.747Z",
+      "issue": "app/lesson/[id].tsx: isPromptingHeartsRef is only released via Alert button onPress or onDismiss, and onDismiss is unreliable on Android with cancelable:false — force-quit during the refill prompt permanently locks the lesson into silent no-op, exactly the team blind spot already recorded."
+    },
+    {
+      "date": "2026-11-03T00:38:50.030Z",
+      "issue": "isPromptingHeartsRef and isContinuingRef can stay stuck true after force-quit or Android OS-dismiss (Alert.alert cancelable:false + no onDismiss cleanup) — makes CHECK and CONTINUE silent no-ops for the rest of the session; this is a recurrence of a known team blind spot."
+    },
+    {
+      "date": "2026-11-03T00:41:56.338Z",
+      "issue": "app/lesson/[id].tsx (and previously elsewhere): guard refs (`isPromptingHeartsRef`, `isContinuingRef`) are released only inside Alert button callbacks; with `cancelable:false` on Android `onDismiss` never fires and the lesson permanently soft-locks. Fix with unmount-time cleanup or a shared useGuardedAlert hook, and stop relying on onDismiss."
+    },
+    {
+      "date": "2026-11-03T00:44:34.400Z",
+      "issue": "Alert guard refs in app/lesson/[id].tsx are released only in positive button callbacks (never destructive path or onDismiss) — a 4th recurrence of the repo's most persistent bug class, causing permanent lockouts on the continue/refill paths."
+    },
+    {
+      "date": "2026-11-03T00:47:57.320Z",
+      "issue": "app/(tabs)/index.tsx builds currentIndex from a flat map while rendering per-unit — S-curve drift; and getMockLessonById now returns undefined for every external caller, a latent TypeError."
+    },
+    {
+      "date": "2026-11-03T00:49:55.220Z",
+      "issue": "getMockLessonById return type narrowed to optional while only the new [id].tsx caller was updated — every other caller is now a latent TypeError at next compile; either keep the non-null throwing contract or add a separately-named tryGet accessor."
+    },
+    {
+      "date": "2026-11-03T00:56:19.792Z",
+      "issue": "Throwing twin getMockLessonById is exported but unused while tryGetMockLessonById was narrowed to optional — latent TypeError trap; delete the throwing twin."
+    },
+    {
+      "date": "2026-11-03T01:00:34.690Z",
+      "issue": "getMockLessonById and mockLessonData both narrowed to non-nullable → optional while no strict throwing accessor is exported — every unconverted caller is a latent TypeError."
+    },
+    {
+      "date": "2026-11-03T01:03:20.143Z",
+      "issue": "data/mockChallenges.ts:190 — `mockLessonData` typed as non-optional `MockLessonData` from a throwing IIFE crashes app boot at import time if DEFAULT_LESSON_ID drifts from mockLessonsById (repeat of the known deferred-crash blind spot)."
+    },
+    {
+      "date": "2026-11-03T01:05:58.926Z",
+      "issue": "goBackOrHome's rAF-based isNavigating release drops legitimate back navigations (lib/navigation.ts:24) and handleContinue releases the alert guard before navigation (app/lesson/[id].tsx:169) — both are repeat blind-spot recurrences and must be fixed before commit."
+    },
+    {
+      "date": "2026-11-03T01:08:06.127Z",
+      "issue": "Guard release order in app/lesson/[id].tsx and lib/navigation.ts reintroduces the release-BEFORE-navigation double-fire blind spot (4th occurrence), and widening mockLessonData to optional will crash every legacy consumer at first render."
+    },
+    {
+      "date": "2026-11-03T01:10:49.343Z",
+      "issue": "app/lesson/[id].tsx has four alert handlers that double-release (onPress + onDismiss) before navigation — the released-before-nav / double-release blind spot firing again, and useAlertGuard is duplicated locally instead of in lib/."
+    },
+    {
+      "date": "2026-11-03T01:14:20.855Z",
+      "issue": "Guard double-release across handleContinue/handleClose (onDismiss + per-button onPress) plus the goBackOrHome internal release — this is the third recurrence of release-order drift and will silently drop legitimate navigation once any one of the five call sites is reordered."
+    },
+    {
+      "date": "2026-11-03T01:22:46.866Z",
+      "issue": "alertGuard has no screen ownership: unmounting LessonArena releases a guard owned by another screen's open alert, re-introducing the double-release/dropped-navigation blind spot the PR was meant to eliminate."
+    },
+    {
+      "date": "2026-11-03T01:26:24.581Z",
+      "issue": "app/lesson/[id].tsx completeLesson error path cannot show its error alert because the outer 'continue' guard is still held — silent progress-loss on save failure."
+    },
+    {
+      "date": "2026-11-03T01:29:34.720Z",
+      "issue": "data/mockChallenges.ts:194 re-introduces the throwing-IIFE mockLessonData blind spot for the Nth time ��� delete the deprecated export before merge; then fix the alertGuard ownership model, which is the root cause of three of the six recurrences in this PR."
+    },
+    {
+      "date": "2026-11-03T01:32:29.882Z",
+      "issue": "The 'continue' alert's error path calls releaseGuard synchronously then defers a new showGuardedAlert via setTimeout(0), recreating the silent-guard-leak blind spot this PR was supposed to fix."
+    },
+    {
+      "date": "2026-11-03T01:36:08.939Z",
+      "issue": "showGuardedAlert error-path setTimeout defers alert past unmount cleanup, guaranteeing silent release and guard leak"
+    }
+  ],
+  "last_reviewed": "2026-11-03T01:36:08.938Z"
 }
