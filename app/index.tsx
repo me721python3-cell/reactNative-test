@@ -8,9 +8,10 @@ import { colors } from "@/constants/theme";
 
 /**
  * Lingua Welcome / Onboarding Screen
- * Replicated exactly to match the Stitch reference image (media_1793707188695.png):
+ * Replicated to match the Stitch reference image:
  * - Brand logo + Lingua header
- * - Light mint rounded hero card with waving mascot & bottom-right speech badge
+ * - Light mint rounded hero card with waving mascot
+ * - Yellow speech bubble badge positioned at the bottom left corner of the mascot image
  * - Tagline with green sparkle: "YOUR NEXT CONVERSATION STARTS HERE"
  * - Headline: "Speak up with\nconfidence."
  * - Tactile 3D "GET STARTED" and "I ALREADY HAVE AN ACCOUNT" buttons
@@ -58,25 +59,27 @@ export default function HomeScreen() {
               borderBottomColor: colors.primaryDark,
             }}
           >
-            {/* Mascot Character Image */}
-            <Image
-              source={images.mascotVoyager}
-              style={{ width: 220, height: 220 }}
-              resizeMode="contain"
-              accessibilityLabel="Lingua mascot"
-            />
+            {/* Mascot Image Container with Badge at the Bottom Left Corner of the Image */}
+            <View className="relative items-center justify-center">
+              <Image
+                source={images.mascotVoyager}
+                style={{ width: 220, height: 220 }}
+                resizeMode="contain"
+                accessibilityLabel="Lingua mascot"
+              />
 
-            {/* Bottom-right Yellow Speech Bubble Badge */}
-            <View
-              className="absolute bottom-4 right-4 items-center justify-center rounded-2xl border-b-4"
-              style={{
-                width: 46,
-                height: 46,
-                backgroundColor: "#fed7aa",
-                borderBottomColor: "#b45309",
-              }}
-            >
-              <Ionicons name="chatbubble-ellipses" size={20} color="#78350f" />
+              {/* Yellow Speech Bubble Badge positioned at the bottom left corner of the image */}
+              <View
+                className="absolute bottom-2 left-2 items-center justify-center rounded-2xl border-b-4"
+                style={{
+                  width: 46,
+                  height: 46,
+                  backgroundColor: "#fed7aa",
+                  borderBottomColor: "#b45309",
+                }}
+              >
+                <Ionicons name="chatbubble-ellipses" size={20} color="#78350f" />
+              </View>
             </View>
           </View>
 
