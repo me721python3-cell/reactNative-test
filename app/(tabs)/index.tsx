@@ -3,9 +3,9 @@ import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 
-import HomeHeader from "@/components/home/HomeHeader";
-import UnitSection from "@/components/home/UnitSection";
-import type { EnrichedUnit } from "@/components/home/UnitSection";
+import HomeHeader from "@/components/tabs/home/HomeHeader";
+import UnitSection from "@/components/tabs/home/UnitSection";
+import type { EnrichedUnit } from "@/components/tabs/home/UnitSection";
 import { colors } from "@/constants/theme";
 import { mockUnits } from "@/data/mockUnits";
 import type { EnrichedLesson } from "@/data/mockUnits";

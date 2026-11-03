@@ -1,7 +1,7 @@
 import { View } from "react-native";
 
 import { UnitBanner } from "@/components/UnitBanner";
-import { LessonPath } from "@/components/home/LessonPath";
+import { LessonPath } from "./LessonPath";
 import type { EnrichedLesson, Unit } from "@/data/mockUnits";
 
 export type EnrichedUnit = Omit<Unit, "lessons"> & {
