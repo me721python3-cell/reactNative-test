@@ -52,13 +52,21 @@ app/ # Routes and screens ONLY. No large reusable UI blocks or complex business 
 lesson/ # The actual lesson/gameplay screens
 components/ # Reusable UI. Create a component only when reused or it simplifies a screen.
 ui/ # Primitive components (Buttons, Cards, Modals)
+tabs/ # Tab-specific modular components (e.g. tabs/home/, tabs/practice/)
 constants/ # Global constants (images.ts, theme.ts)
 data/ # Typed mock data (mockLessons.ts, mockUsers.ts)
-hooks/ # Custom React hooks (useAI.ts, useProgress.ts)
+hooks/ # Custom React hooks (useAI.ts, useProgress.ts, useLearningPath.ts)
 lib/ # External service helpers (ai.ts, clerk.ts, cn.ts). Never expose secrets.
 store/ # Zustand stores (useAppStore.ts)
 types/ # Global TypeScript interfaces
 assets/ # Images, fonts, static files
+
+## CRITICAL: Component & State Architecture Rules
+1. **Route Screens are Pure Orchestrators (`app/`):** Screens must stay slim (< 50 lines). Never put data transformations, multi-field store derivations, or business logic in route components.
+2. **Dedicated Screen Hooks (`hooks/`):** Encapsulate state subscriptions (Zustand), derivations, and action handlers inside a dedicated hook (e.g., `useLearningPath.ts`, `useQuests.ts`).
+3. **No "Ghost" Wrappers:** Never create pass-through components that merely render an existing component without adding layout, styling, or logic. Use shared components directly.
+4. **Scoped Tab Folders:** Place tab-specific subcomponents in `components/tabs/<tab-name>/` (e.g. `components/tabs/home/`), and cross-cutting reusable UI in `components/ui/` or `components/`.
+5. **Explicit Component Contracts:** Subcomponents must expose props for user actions (`onPress`, `onSelect`) so state and navigation remain controllable and testable.
 
 ## UI & Styling Rules (Stitch Designs)
 - **UI Replication:** Match layouts, spacing, font sizes, colors, and border radius EXACTLY to the provided Stitch designs. Do not approximate.
