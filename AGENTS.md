@@ -68,6 +68,14 @@ assets/ # Images, fonts, static files
 4. **Scoped Tab Folders:** Place tab-specific subcomponents in `components/tabs/<tab-name>/` (e.g. `components/tabs/home/`), and cross-cutting reusable UI in `components/ui/` or `components/`.
 5. **Explicit Component Contracts:** Subcomponents must expose props for user actions (`onPress`, `onSelect`) so state and navigation remain controllable and testable.
 
+## Recommended Hook References & Patterns
+When creating custom hooks in `hooks/` or handling device/lifecycle events, follow these patterns (inspired by [react-native-community/hooks](https://github.com/react-native-community/hooks)):
+- **Native Built-ins First:** `useWindowDimensions` (responsive heights), `useMemo` / `useCallback` (derivations), `useRef` (guards & timers).
+- **`useBackHandler` Pattern:** Intercept Android hardware back button (e.g. lesson exit confirmations) via native `BackHandler`.
+- **`useKeyboard` Pattern:** Track keyboard appearance and heights for input screens via native `Keyboard`.
+- **`useAppState` Pattern:** Detect app background/foreground transitions (e.g. streak & quest refreshes) via native `AppState`.
+- **Dependency Rule:** Prefer clean, native in-repo hooks over adding extra external packages.
+
 ## UI & Styling Rules (Stitch Designs)
 - **UI Replication:** Match layouts, spacing, font sizes, colors, and border radius EXACTLY to the provided Stitch designs. Do not approximate.
 - **Tactile 3D Interaction:** Every primary button and interactive card MUST have a solid bottom shadow and a press animation. 
