@@ -1,5 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 
+import { images } from "@/constants/images";
+
 /**
  * Typed mock quests and challenges for the Quests screen.
  * Follows AGENTS.md data mocking guidelines and Stitch design specifications.
@@ -18,6 +20,7 @@ export interface DailyQuest extends MockQuest {
   iconBgColor: string;
   iconColor: string;
   progressColor: string;
+  progressWidthClass: string;
   rewardType: "claim" | "boost" | "gems";
   rewardLabel: string;
   claimed?: boolean;
@@ -52,18 +55,19 @@ export interface FriendsQuest {
   rewardTitle: string;
 }
 
+export type PastBadgeImageKey = keyof typeof images;
+
 export interface PastBadge {
   id: string;
   month: string;
   title: string;
   unlocked: boolean;
-  badgeBgColor: string;
-  iconColor: string;
-  iconName: keyof typeof Ionicons.glyphMap;
+  glowColor: string;
+  imageKey?: PastBadgeImageKey;
 }
 
 /**
- * 3 Daily Quests matching Stitch design reference.
+ * 3 Daily Quests directly matching the Stitch design specification.
  */
 export const mockDailyQuests: DailyQuest[] = [
   {
@@ -72,9 +76,10 @@ export const mockDailyQuests: DailyQuest[] = [
     progress: 50,
     goal: 50,
     iconName: "flash",
-    iconBgColor: "#e8fadc",
-    iconColor: "#58cc02",
+    iconBgColor: "rgba(88, 204, 2, 0.2)",
+    iconColor: "#2b6c00",
     progressColor: "#58cc02",
+    progressWidthClass: "w-full",
     rewardType: "claim",
     rewardLabel: "Claim",
     claimed: false,
@@ -84,10 +89,11 @@ export const mockDailyQuests: DailyQuest[] = [
     title: "Score 90%+ in 3 lessons",
     progress: 2,
     goal: 3,
-    iconName: "star",
-    iconBgColor: "#fff7d6",
-    iconColor: "#e5b400",
-    progressColor: "#ffc800",
+    iconName: "locate-outline",
+    iconBgColor: "rgba(254, 199, 0, 0.2)",
+    iconColor: "#755b00",
+    progressColor: "#fec700",
+    progressWidthClass: "w-2/3",
     rewardType: "boost",
     rewardLabel: "15m 2x",
   },
@@ -96,10 +102,11 @@ export const mockDailyQuests: DailyQuest[] = [
     title: "Spend 15 mins learning",
     progress: 11,
     goal: 15,
-    iconName: "time",
-    iconBgColor: "#ddf4ff",
-    iconColor: "#1899d6",
-    progressColor: "#1cb0f6",
+    iconName: "alarm-outline",
+    iconBgColor: "rgba(74, 189, 255, 0.2)",
+    iconColor: "#006590",
+    progressColor: "#4abdff",
+    progressWidthClass: "w-[73%]",
     rewardType: "gems",
     rewardLabel: "+20",
   },
@@ -138,43 +145,38 @@ export const mockFriendsQuest: FriendsQuest = {
   rewardTitle: "100 Gems + 30m Boost",
 };
 
-/** Past Badges (2x2 grid) */
+/** Past Badges directly referencing Stitch badge images */
 export const mockPastBadges: PastBadge[] = [
   {
     id: "b1",
     month: "September",
     title: "Harvest Champ",
     unlocked: true,
-    badgeBgColor: "#fff4cc",
-    iconColor: "#d97706",
-    iconName: "ribbon",
+    glowColor: "#ffdf92",
+    imageKey: "badgeSeptember",
   },
   {
     id: "b2",
     month: "August",
     title: "Sunburst Hero",
     unlocked: true,
-    badgeBgColor: "#ffe8cc",
-    iconColor: "#ea580c",
-    iconName: "sunny",
+    glowColor: "#fec700",
+    imageKey: "badgeAugust",
   },
   {
     id: "b3",
     month: "July",
     title: "Sparkle Master",
     unlocked: true,
-    badgeBgColor: "#ddf4ff",
-    iconColor: "#0284c7",
-    iconName: "sparkles",
+    glowColor: "#c8e6ff",
+    imageKey: "badgeJuly",
   },
   {
     id: "b4",
     month: "November",
     title: "Unlocks soon",
     unlocked: false,
-    badgeBgColor: "#f3f4f6",
-    iconColor: "#9ca3af",
-    iconName: "lock-closed",
+    glowColor: "#e9e8e7",
   },
 ];
 
