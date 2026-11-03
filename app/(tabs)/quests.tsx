@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { MobileHeader } from "@/components/MobileHeader";
 import { images } from "@/constants/images";
+import { colors } from "@/constants/theme";
 import {
   DailyQuest,
   mockDailyQuests,
@@ -19,252 +20,311 @@ import { useAppStore } from "@/store/useAppStore";
 
 /**
  * Top Monthly Badge Hero Card
- * Precisely matched to the Stitch reference: soft sky background (#f0f8ff),
- * double-ring cosmic mascot badge, rewards pills, and stepped progress bar.
+ * Pixel-perfect alignment, positions, font sizes, and milestone placements
+ * directly matching the user's reference screenshot (media_1793704263737.png).
+ * The star badge is anchored to the outer bottom-right rim so it never obscures the fox mascot.
  */
 function MonthlyChallengeCard() {
   const challenge = mockMonthlyChallenge;
 
   return (
     <View
-      className="mb-5 w-full rounded-3xl p-4 shadow-sm"
+      className="relative mb-5 w-full overflow-hidden rounded-3xl p-5 shadow-sm"
       style={{
-        backgroundColor: "#f0f8ff",
+        backgroundColor: colors.surface,
         borderWidth: 1,
-        borderColor: "#e0f2fe",
+        borderColor: colors.border,
       }}
     >
-      {/* Top Tag Pills */}
-      <View className="flex-row items-center justify-between">
-        <View
-          className="rounded-full px-3 py-1"
-          style={{ backgroundColor: "#dbeafe" }}
-        >
-          <Text
-            className="text-[11px] font-black uppercase tracking-wider"
-            style={{ color: "#0284c7" }}
-          >
-            • {challenge.month} Challenge
-          </Text>
-        </View>
+      {/* Subtle Ambient Cosmic Background Glows */}
+      <View
+        className="pointer-events-none absolute -right-10 -top-10 h-44 w-44 rounded-full"
+        style={{ backgroundColor: "#e0f2fe", opacity: 0.7 }}
+      />
+      <View
+        className="pointer-events-none absolute -bottom-8 -left-8 h-36 w-36 rounded-full"
+        style={{ backgroundColor: "#fef3c7", opacity: 0.6 }}
+      />
 
-        <View
-          className="flex-row items-center gap-1 rounded-full px-3 py-1"
-          style={{ backgroundColor: "#fef3c7" }}
-        >
-          <Ionicons name="time-outline" size={13} color="#854d0e" />
-          <Text
-            className="text-[11px] font-black"
-            style={{ color: "#854d0e" }}
-          >
-            {challenge.daysLeft} days left
-          </Text>
-        </View>
-      </View>
-
-      {/* Hero Visual + Title Row */}
-      <View className="mt-3.5 flex-row items-center gap-3.5">
-        {/* Double-ring Cosmic Mascot Badge */}
-        <View className="relative items-center justify-center">
+      <View className="relative z-10 flex-col">
+        {/* 1. Top Urgency Pill & Month Tag Row */}
+        <View className="flex-row items-center justify-between">
           <View
-            className="items-center justify-center rounded-full"
+            className="flex-row items-center gap-1 rounded-full px-3.5 py-1.5"
+            style={{ backgroundColor: "#e0f2fe" }}
+          >
+            <Text
+              className="text-xs font-black uppercase tracking-wider"
+              style={{ color: colors.tertiary }}
+            >
+              • {challenge.month} Challenge
+            </Text>
+          </View>
+
+          <View
+            className="flex-row items-center gap-1.5 rounded-full px-3.5 py-1.5"
+            style={{ backgroundColor: "#fef3c7" }}
+          >
+            <Ionicons name="time-outline" size={14} color="#755b00" />
+            <Text
+              className="text-xs font-extrabold"
+              style={{ color: colors.ink }}
+            >
+              {challenge.daysLeft} days left
+            </Text>
+          </View>
+        </View>
+
+        {/* 2. Mascot Disc + Title Row */}
+        <View className="mt-4 flex-row items-center gap-4">
+          {/* 3D Cosmic Mascot Badge Graphic */}
+          <View
+            className="relative flex-shrink-0 items-center justify-center rounded-full"
             style={{
-              width: 78,
-              height: 78,
-              backgroundColor: "#bae6fd",
+              width: 94,
+              height: 94,
+              backgroundColor: "rgba(186, 230, 253, 0.4)",
             }}
           >
+            {/* Inner Tactile 3D Disc */}
             <View
-              className="items-center justify-center rounded-full"
+              className="items-center justify-center rounded-full border-b-[5px]"
               style={{
-                width: 66,
-                height: 66,
-                backgroundColor: "#0284c7",
+                width: 82,
+                height: 82,
+                backgroundColor: "#38bdf8",
+                borderBottomColor: colors.tertiary,
               }}
             >
+              {/* Fox mascot: centered with padding so star never overlaps */}
               <Image
                 source={images.mascotVoyager}
-                style={{ width: 48, height: 48, borderRadius: 24 }}
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 25,
+                  marginBottom: 2,
+                  marginRight: 2,
+                }}
                 resizeMode="contain"
               />
             </View>
-          </View>
 
-          {/* Attached Gold Star Badge */}
-          <View
-            className="absolute -bottom-1 -right-1 items-center justify-center rounded-full"
-            style={{
-              width: 22,
-              height: 22,
-              backgroundColor: "#facc15",
-              borderWidth: 2,
-              borderColor: "#ca8a04",
-            }}
-          >
-            <Ionicons name="star" size={11} color="#1f2937" />
-          </View>
-        </View>
-
-        {/* Title, Subtitle & Rewards Summary */}
-        <View className="min-w-0 flex-1">
-          <Text
-            className="text-lg font-black leading-tight"
-            style={{ color: "#111827" }}
-          >
-            {challenge.title}
-          </Text>
-          <Text
-            className="mt-1 text-xs font-semibold leading-snug"
-            style={{ color: "#4b5563" }}
-            numberOfLines={2}
-          >
-            {challenge.subtitle}
-          </Text>
-
-          {/* Mini Reward Pills */}
-          <View className="mt-2 flex-row flex-wrap items-center gap-2">
+            {/* Attached Solid 3D Gold Star Badge at outer bottom-right */}
             <View
-              className="flex-row items-center gap-1 rounded-full px-2.5 py-0.5"
-              style={{ backgroundColor: "#f3f4f6" }}
+              style={{
+                position: "absolute",
+                bottom: 2,
+                right: 2,
+                width: 24,
+                height: 24,
+                borderRadius: 12,
+                backgroundColor: colors.gold,
+                borderWidth: 2,
+                borderColor: "#ffffff",
+                borderBottomWidth: 3,
+                borderBottomColor: colors.goldDark,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
-              <Text
-                className="text-xs font-black"
-                style={{ color: "#111827" }}
-              >
-                {challenge.rewards.gems}
-              </Text>
-            </View>
-
-            <View
-              className="flex-row items-center gap-1 rounded-full px-2.5 py-0.5"
-              style={{ backgroundColor: "#f3f4f6" }}
-            >
-              <Ionicons name="flash" size={12} color="#ca8a04" />
-              <Text
-                className="text-xs font-black"
-                style={{ color: "#111827" }}
-              >
-                {challenge.rewards.boost}
-              </Text>
+              <Ionicons name="star" size={11} color={colors.ink} />
             </View>
           </View>
-        </View>
-      </View>
 
-      {/* Stepped Milestone Tracker Track */}
-      <View className="mt-3 flex-col gap-1.5">
-        <View className="flex-row items-center justify-between">
-          <Text
-            className="text-xs font-black"
-            style={{ color: "#374151" }}
-          >
-            Quest Progress
-          </Text>
-          <Text
-            className="text-xs font-black"
-            style={{ color: "#58cc02" }}
-          >
-            {challenge.progress} / {challenge.goal} completed
-          </Text>
-        </View>
+          {/* Title & Rewards */}
+          <View className="min-w-0 flex-1">
+            <Text
+              className="text-[23px] font-black leading-[27px]"
+              style={{ color: colors.ink }}
+            >
+              Cosmic Voyager{"\n"}Badge
+            </Text>
+            <Text
+              className="mt-1 text-[13px] font-semibold leading-[18px]"
+              style={{ color: colors.onSurfaceVariant }}
+              numberOfLines={2}
+            >
+              {challenge.subtitle}
+            </Text>
 
-        {/* Progress Bar with Milestones */}
-        <View
-          className="relative w-full flex-row items-center overflow-visible rounded-full"
-          style={{ height: 16, backgroundColor: "#e5e7eb" }}
-        >
-          {/* Active Green Fill (80% for 24/30) */}
-          <View
-            className="relative h-full rounded-full"
-            style={{
-              width: "80%",
-              backgroundColor: "#58cc02",
-            }}
-          />
+            {/* Mini Reward Pills */}
+            <View className="mt-3 flex-row items-center gap-2">
+              <View
+                className="rounded-xl px-3.5 py-1"
+                style={{ backgroundColor: colors.field }}
+              >
+                <Text
+                  className="text-xs font-black"
+                  style={{ color: colors.ink }}
+                >
+                  {challenge.rewards.gems}
+                </Text>
+              </View>
 
-          {/* Milestone 1 (10) at 33% */}
-          <View
-            style={{
-              position: "absolute",
-              left: "33%",
-              marginLeft: -9,
-              width: 18,
-              height: 18,
-              borderRadius: 9,
-              backgroundColor: "#58cc02",
-              alignItems: "center",
-              justifyContent: "center",
-              borderWidth: 1.5,
-              borderColor: "#ffffff",
-            }}
-          >
-            <Ionicons name="checkmark" size={11} color="#ffffff" />
-          </View>
-
-          {/* Milestone 2 (20) at 66% */}
-          <View
-            style={{
-              position: "absolute",
-              left: "66%",
-              marginLeft: -9,
-              width: 18,
-              height: 18,
-              borderRadius: 9,
-              backgroundColor: "#58cc02",
-              alignItems: "center",
-              justifyContent: "center",
-              borderWidth: 1.5,
-              borderColor: "#ffffff",
-            }}
-          >
-            <Ionicons name="checkmark" size={11} color="#ffffff" />
-          </View>
-
-          {/* Milestone 3 (30 - Goal) at Right Edge */}
-          <View
-            style={{
-              position: "absolute",
-              right: -3,
-              width: 22,
-              height: 22,
-              borderRadius: 11,
-              backgroundColor: "#eab308",
-              borderWidth: 1.5,
-              borderColor: "#ca8a04",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Ionicons name="lock-closed" size={12} color="#ffffff" />
+              <View
+                className="flex-row items-center gap-1.5 rounded-xl px-3.5 py-1"
+                style={{ backgroundColor: colors.field }}
+              >
+                <Ionicons name="flash" size={13} color="#755b00" />
+                <Text
+                  className="text-xs font-black"
+                  style={{ color: colors.ink }}
+                >
+                  {challenge.rewards.boost}
+                </Text>
+              </View>
+            </View>
           </View>
         </View>
 
-        {/* Milestone labels */}
-        <View className="mt-0.5 flex-row justify-between px-1">
-          <Text
-            className="text-[11px] font-extrabold"
-            style={{ color: "#4b5563" }}
+        {/* 3. Quest Progress Section */}
+        <View className="mt-5 flex-col">
+          <View className="flex-row items-center justify-between">
+            <Text
+              className="text-[14px] font-black"
+              style={{ color: "#2c3327" }}
+            >
+              Quest Progress
+            </Text>
+            <Text
+              className="text-[14px] font-black"
+              style={{ color: colors.primary }}
+            >
+              {challenge.progress} / {challenge.goal} completed
+            </Text>
+          </View>
+
+          {/* Chunky Milestone Progress Bar (22px height) */}
+          <View
+            className="relative mt-2.5 w-full flex-row items-center overflow-visible rounded-full"
+            style={{ height: 22, backgroundColor: colors.field }}
           >
-            Start
-          </Text>
-          <Text
-            className="pl-5 text-[11px] font-extrabold"
-            style={{ color: "#4b5563" }}
-          >
-            10
-          </Text>
-          <Text
-            className="pl-8 text-[11px] font-extrabold"
-            style={{ color: "#4b5563" }}
-          >
-            20
-          </Text>
-          <Text
-            className="text-[11px] font-black"
-            style={{ color: "#ca8a04" }}
-          >
-            30 Quests
-          </Text>
+            {/* Active Green Fill Tube (80% for 24/30) */}
+            <View
+              className="relative h-full overflow-hidden rounded-full"
+              style={{
+                width: "80%",
+                backgroundColor: colors.primary,
+              }}
+            >
+              {/* Gloss highlight streak along top */}
+              <View
+                className="absolute left-1 right-1 top-0.5 rounded-full"
+                style={{
+                  height: 6,
+                  backgroundColor: "#ffffff",
+                  opacity: 0.35,
+                }}
+              />
+            </View>
+
+            {/* Milestone Checkpoint 1 (10) at 33% */}
+            <View
+              style={{
+                position: "absolute",
+                left: "33%",
+                marginLeft: -10,
+                width: 20,
+                height: 20,
+                borderRadius: 10,
+                backgroundColor: colors.primary,
+                borderWidth: 1.5,
+                borderColor: "rgba(255, 255, 255, 0.7)",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Ionicons name="checkmark" size={12} color="#ffffff" />
+            </View>
+
+            {/* Milestone Checkpoint 2 (20) at 66% */}
+            <View
+              style={{
+                position: "absolute",
+                left: "66%",
+                marginLeft: -10,
+                width: 20,
+                height: 20,
+                borderRadius: 10,
+                backgroundColor: colors.primary,
+                borderWidth: 1.5,
+                borderColor: "rgba(255, 255, 255, 0.7)",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Ionicons name="checkmark" size={12} color="#ffffff" />
+            </View>
+
+            {/* Milestone Checkpoint 3 (30 - Goal) at Right Edge */}
+            <View
+              style={{
+                position: "absolute",
+                right: -4,
+                width: 28,
+                height: 28,
+                borderRadius: 14,
+                backgroundColor: colors.gold,
+                borderWidth: 2,
+                borderColor: colors.goldDark,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Ionicons name="lock-closed" size={14} color="#6e5400" />
+            </View>
+          </View>
+
+          {/* Milestone Labels with exact alignment */}
+          <View className="relative mt-1.5 h-5 w-full">
+            <Text
+              style={{
+                position: "absolute",
+                left: 2,
+                fontSize: 12,
+                fontWeight: "700",
+                color: "#4b5563",
+              }}
+            >
+              Start
+            </Text>
+            <Text
+              style={{
+                position: "absolute",
+                left: "33%",
+                marginLeft: -8,
+                fontSize: 12,
+                fontWeight: "700",
+                color: "#4b5563",
+              }}
+            >
+              10
+            </Text>
+            <Text
+              style={{
+                position: "absolute",
+                left: "66%",
+                marginLeft: -8,
+                fontSize: 12,
+                fontWeight: "700",
+                color: "#4b5563",
+              }}
+            >
+              20
+            </Text>
+            <Text
+              style={{
+                position: "absolute",
+                right: 0,
+                fontSize: 12,
+                fontWeight: "900",
+                color: "#755b00",
+              }}
+            >
+              30 Quests
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -273,8 +333,7 @@ function MonthlyChallengeCard() {
 
 /**
  * Individual Daily Quest Card matching Stitch reference.
- * Clean white background (#ffffff), fully rounded circular icon badges,
- * and solid 3D tactile Claim button.
+ * Pure white card, circular icon badge, progress bar, and 3D tactile Claim button.
  */
 function DailyQuestCard({
   quest,
@@ -294,12 +353,12 @@ function DailyQuestCard({
     <View
       className="mb-3 w-full flex-row items-center gap-3.5 rounded-2xl p-4 shadow-sm"
       style={{
-        backgroundColor: "#ffffff",
+        backgroundColor: colors.surface,
         borderWidth: 1,
-        borderColor: "#f3f4f6",
+        borderColor: colors.border,
       }}
     >
-      {/* Fully Rounded Circular Icon Badge */}
+      {/* Circular Icon Badge */}
       <View
         className="flex-shrink-0 items-center justify-center rounded-full"
         style={{
@@ -321,7 +380,7 @@ function DailyQuestCard({
               ? "#16a34a"
               : quest.id === "q2"
               ? "#ca8a04"
-              : "#0284c7"
+              : colors.gem
           }
         />
       </View>
@@ -331,7 +390,7 @@ function DailyQuestCard({
         <View className="flex-row items-center justify-between">
           <Text
             className="text-base font-black"
-            style={{ color: "#111827" }}
+            style={{ color: colors.ink }}
             numberOfLines={1}
           >
             {quest.title}
@@ -347,7 +406,7 @@ function DailyQuestCard({
         {/* Progress Bar (12px height) */}
         <View
           className="mt-2 w-full overflow-hidden rounded-full"
-          style={{ height: 12, backgroundColor: "#e5e7eb" }}
+          style={{ height: 12, backgroundColor: colors.field }}
         >
           <View
             className="h-full rounded-full"
@@ -356,10 +415,10 @@ function DailyQuestCard({
               backgroundColor: isClaimed
                 ? "#9ca3af"
                 : quest.id === "q1"
-                ? "#58cc02"
+                ? colors.primary
                 : quest.id === "q2"
-                ? "#eab308"
-                : "#38bdf8",
+                ? colors.gold
+                : colors.gem,
             }}
           />
         </View>
@@ -373,18 +432,18 @@ function DailyQuestCard({
           onPress={() => onClaim(quest.id)}
           className="flex-shrink-0 rounded-2xl border-b-4 px-6 py-2.5 active:translate-y-1 active:border-b-0"
           style={{
-            backgroundColor: "#58cc02",
-            borderBottomColor: "#46a302",
+            backgroundColor: colors.primary,
+            borderBottomColor: colors.primaryDark,
           }}
         >
           <Text className="text-sm font-black text-white">Claim</Text>
         </Pressable>
       ) : isClaimed ? (
         <View
-          className="flex-shrink-0 flex-row items-center gap-1 rounded-2xl px-3 py-2"
-          style={{ backgroundColor: "#f3f4f6" }}
+          className="flex-shrink-0 flex-row items-center gap-1 rounded-2xl px-3.5 py-2"
+          style={{ backgroundColor: colors.field }}
         >
-          <Ionicons name="checkmark-done" size={14} color="#58cc02" />
+          <Ionicons name="checkmark-done" size={14} color={colors.primary} />
           <Text
             className="text-xs font-black"
             style={{ color: "#4b5563" }}
@@ -396,9 +455,9 @@ function DailyQuestCard({
         <View
           className="flex-shrink-0 items-center justify-center rounded-2xl"
           style={{
-            width: 46,
-            height: 46,
-            backgroundColor: "#f3f4f6",
+            width: 48,
+            height: 48,
+            backgroundColor: colors.field,
           }}
         >
           {quest.rewardType === "boost" ? (
@@ -427,8 +486,6 @@ function DailyQuestCard({
 
 /**
  * Friends Quest Co-op Section Card matching Stitch reference.
- * Pure white card, partner avatar, dual-color split progress bar,
- * and tactile 3D Nudge Sofia button.
  */
 function FriendsQuestCard() {
   const friendsQuest = mockFriendsQuest;
@@ -449,18 +506,18 @@ function FriendsQuestCard() {
     <View
       className="mb-5 w-full rounded-3xl p-4 shadow-sm"
       style={{
-        backgroundColor: "#ffffff",
+        backgroundColor: colors.surface,
         borderWidth: 1,
-        borderColor: "#f3f4f6",
+        borderColor: colors.border,
       }}
     >
       {/* Header with Partner Info */}
       <View className="mb-2.5 flex-row items-center justify-between">
         <View className="flex-row items-center gap-2">
-          <Ionicons name="people" size={18} color="#0284c7" />
+          <Ionicons name="people" size={18} color={colors.gem} />
           <Text
             className="text-base font-black"
-            style={{ color: "#111827" }}
+            style={{ color: colors.ink }}
           >
             Friends Quest
           </Text>
@@ -471,7 +528,7 @@ function FriendsQuestCard() {
         >
           <Text
             className="text-xs font-black"
-            style={{ color: "#0284c7" }}
+            style={{ color: colors.gem }}
           >
             {friendsQuest.daysLeft} days left
           </Text>
@@ -490,7 +547,7 @@ function FriendsQuestCard() {
               borderRadius: 22,
               borderWidth: 2,
               borderColor: "#ffffff",
-              backgroundColor: "#f3f4f6",
+              backgroundColor: colors.field,
             }}
           />
           <View
@@ -501,7 +558,7 @@ function FriendsQuestCard() {
               marginLeft: -12,
               borderWidth: 2,
               borderColor: "#ffffff",
-              backgroundColor: "#58cc02",
+              backgroundColor: colors.primary,
               alignItems: "center",
               justifyContent: "center",
             }}
@@ -514,16 +571,16 @@ function FriendsQuestCard() {
         <View className="min-w-0 flex-1 flex-col">
           <Text
             className="text-sm font-black leading-tight"
-            style={{ color: "#111827" }}
+            style={{ color: colors.ink }}
           >
             {friendsQuest.title}
           </Text>
           <Text
             className="mt-0.5 text-xs font-semibold"
-            style={{ color: "#4b5563" }}
+            style={{ color: colors.onSurfaceVariant }}
           >
             Quest partner:{" "}
-            <Text className="font-black" style={{ color: "#111827" }}>
+            <Text className="font-black" style={{ color: colors.ink }}>
               {friendsQuest.partnerName}
             </Text>
           </Text>
@@ -541,7 +598,7 @@ function FriendsQuestCard() {
           </Text>
           <Text
             className="text-xs font-black"
-            style={{ color: "#0284c7" }}
+            style={{ color: colors.gem }}
           >
             {totalProgress} / {friendsQuest.goal}
           </Text>
@@ -549,17 +606,17 @@ function FriendsQuestCard() {
 
         <View
           className="w-full flex-row overflow-hidden rounded-full"
-          style={{ height: 13, backgroundColor: "#e5e7eb" }}
+          style={{ height: 13, backgroundColor: colors.field }}
         >
           {/* Sofia's Share (46%) */}
           <View
             className="h-full rounded-l-full"
-            style={{ width: "46%", backgroundColor: "#38bdf8" }}
+            style={{ width: "46%", backgroundColor: colors.gem }}
           />
           {/* User's Share (34%) */}
           <View
             className="h-full"
-            style={{ width: "34%", backgroundColor: "#58cc02" }}
+            style={{ width: "34%", backgroundColor: colors.primary }}
           />
         </View>
       </View>
@@ -586,7 +643,7 @@ function FriendsQuestCard() {
             </Text>
             <Text
               className="text-xs font-black leading-tight"
-              style={{ color: "#111827" }}
+              style={{ color: colors.ink }}
             >
               {friendsQuest.rewardTitle}
             </Text>
@@ -600,13 +657,13 @@ function FriendsQuestCard() {
           onPress={handleNudge}
           className="rounded-2xl border border-[#e5e7eb] border-b-4 px-5 py-2.5 active:translate-y-1 active:border-b-2"
           style={{
-            backgroundColor: nudged ? "#dcfce7" : "#f3f4f6",
-            borderBottomColor: nudged ? "#86efac" : "#d1d5db",
+            backgroundColor: nudged ? "#dcfce7" : colors.field,
+            borderBottomColor: nudged ? "#86efac" : colors.surfaceDim,
           }}
         >
           <Text
             className="text-sm font-black"
-            style={{ color: nudged ? "#16a34a" : "#0284c7" }}
+            style={{ color: nudged ? "#16a34a" : colors.tertiary }}
           >
             {nudged ? "Nudged ✨" : "Nudge Sofia"}
           </Text>
@@ -618,8 +675,6 @@ function FriendsQuestCard() {
 
 /**
  * Past Badges 2x2 Grid Section matching Stitch reference.
- * Badges 1-3 have pure white card backgrounds with pastel circular glow emblems;
- * Badge 4 has a subtle gray locked background.
  */
 function PastBadgesGrid({
   badges,
@@ -633,7 +688,7 @@ function PastBadgesGrid({
       <View className="mb-1 flex-row items-center justify-between px-1">
         <Text
           className="text-lg font-black"
-          style={{ color: "#111827" }}
+          style={{ color: colors.ink }}
         >
           Past Badges
         </Text>
@@ -658,9 +713,9 @@ function PastBadgesGrid({
               onPress={() => onBadgePress(badge)}
               className="w-[48%] flex-col items-center rounded-3xl p-4 shadow-sm active:translate-y-0.5"
               style={{
-                backgroundColor: badge.unlocked ? "#ffffff" : "#f3f4f6",
+                backgroundColor: badge.unlocked ? colors.surface : colors.field,
                 borderWidth: 1,
-                borderColor: badge.unlocked ? "#f3f4f6" : "#e5e7eb",
+                borderColor: badge.unlocked ? colors.border : colors.surfaceDim,
               }}
             >
               {/* Pastel Circular Glow Emblem */}
@@ -676,7 +731,7 @@ function PastBadgesGrid({
                       ? "#fef08a"
                       : badge.month === "July"
                       ? "#e0f2fe"
-                      : "#e5e7eb",
+                      : colors.surfaceDim,
                 }}
               >
                 {badgeImage ? (
@@ -692,7 +747,7 @@ function PastBadgesGrid({
 
               <Text
                 className="text-sm font-black"
-                style={{ color: badge.unlocked ? "#111827" : "#4b5563" }}
+                style={{ color: badge.unlocked ? colors.ink : "#4b5563" }}
               >
                 {badge.month}
               </Text>
@@ -713,7 +768,6 @@ function PastBadgesGrid({
 
 /**
  * Main Quests Screen
- * Exactly matches Stitch reference styling, spacing, and colors.
  */
 export default function QuestsScreen() {
   const [dailyQuests, setDailyQuests] = useState<DailyQuest[]>(mockDailyQuests);
@@ -754,7 +808,7 @@ export default function QuestsScreen() {
   return (
     <SafeAreaView
       className="flex-1"
-      style={{ backgroundColor: "#fbf9f9" }}
+      style={{ backgroundColor: colors.background }}
       edges={["top"]}
     >
       {/* Top Mobile Header */}
@@ -781,7 +835,7 @@ export default function QuestsScreen() {
                 <Ionicons name="calendar" size={19} color="#ca8a04" />
                 <Text
                   className="text-lg font-black"
-                  style={{ color: "#111827" }}
+                  style={{ color: colors.ink }}
                 >
                   Daily Quests
                 </Text>
